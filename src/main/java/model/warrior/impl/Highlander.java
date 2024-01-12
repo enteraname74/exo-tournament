@@ -4,8 +4,10 @@ import model.warrior.Warrior;
 import model.weapon.impl.GreatSword;
 
 public class Highlander extends Warrior {
+    private Integer attacks = 0;
+
     public Highlander() {
-        super(120, new GreatSword());
+        super(150, new GreatSword());
     }
 
     public Highlander(String elt) {
@@ -13,7 +15,22 @@ public class Highlander extends Warrior {
     }
 
     @Override
-    public Warrior equip(String equipment) {
+    public Highlander equip(String equipment) {
         return null;
+    }
+
+    @Override
+    public Integer manageAttack() {
+        if (attacks == 2) {
+            attacks = 0;
+            return 0;
+        }
+        attacks += 1;
+        return super.manageAttack();
+    }
+
+    @Override
+    public String toString() {
+        return "Highlander";
     }
 }

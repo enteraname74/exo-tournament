@@ -7,14 +7,11 @@ import model.weapon.Weapon;
 /**
  * Defensive equipment used when attacked by another Warrior.
  */
-public abstract class DefensiveEquipment extends Equipment {
-    public DefensiveEquipment(String equipmentName, Warrior warrior) {
-        super(equipmentName, warrior);
-    }
-
+public interface DefensiveEquipment {
     /**
-     * Attack the warrior and apply the defensive effect on him.
+     * Apply a defensive effect and return the reduced damage to apply to the warrior.
      * @param attackerWeapon the weapon of the attacker.
+     * @param attackerDamage the damage the attack deals after the application of his offensives equipments.
      */
-    public abstract void applyDefensiveEffectWhenAttacked(Weapon attackerWeapon);
+    Integer applyDefensiveEffectWhenAttacked(Weapon attackerWeapon, Integer attackerDamage);
 }

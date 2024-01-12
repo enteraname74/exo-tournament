@@ -2,6 +2,7 @@ package model.warrior;
 
 import model.equipment.Equipment;
 import model.equipment.defensiveequipment.DefensiveEquipment;
+import model.equipment.offensiveequipment.OffensiveEquipment;
 import model.weapon.Weapon;
 
 import java.util.ArrayList;
@@ -48,14 +49,42 @@ public abstract class Warrior {
      * @param amount the amount to reduce.
      */
     public void reduceHitPoints(Integer amount) {
+        System.out.println(this+" will take "+amount+" damages");
         this.hitPoints = Math.max(this.hitPoints - amount, 0);
+    }
+
+    /**
+     * Manage one encounter between two warriors.
+     * @param otherWarrior the attacked warrior.
+     */
+    public void manageEncounter(Warrior otherWarrior) {
+        Integer attackerTotalDamage = manageAttack();
+        System.out.println(this+" will deal "+attackerTotalDamage+" damages");
+        otherWarrior.manageDefense(this.weapon, attackerTotalDamage);
+    }
+
+    public Integer manageAttack() {
+        List<OffensiveEquipment> offensiveEquipments = getAllOffensiveEquipments();
+
+        // Si le Warrior n'a pas d'équipements d'attaques, on retourne les dégats initiaux qu'il doit donner.
+        if (offensiveEquipments.isEmpty()) {
+            return getWeapon().getDamage();
+        }
+
+        Integer totalDamage = 0;
+        for (OffensiveEquipment offensiveEquipment: offensiveEquipments) {
+            totalDamage -= offensiveEquipment.attackWarriorWithEffect(getWeapon());
+            totalDamage = Math.max(totalDamage, 0);
+        }
+        return totalDamage;
     }
 
     /**
      * Manage the defense of the warrior.
      * @param attackWeapon the weapon of the attacker
+     * @param attackerDamage the damage the attacker deals after the application of his offensives equipments.
      */
-    public void manageDefense(Weapon attackWeapon) {
+    public void manageDefense(Weapon attackWeapon, Integer attackerDamage) {
         List<DefensiveEquipment> defensiveEquipments = getAllDefensiveEquipments();
 
         // Si le Warrior n'a pas d'équipements de défense, il subit la totalité de l'attaque.
@@ -64,15 +93,18 @@ public abstract class Warrior {
             return;
         }
 
-        // Prenons le premier equipment.
-        DefensiveEquipment defensiveEquipment = defensiveEquipments.get(0);
-        defensiveEquipment.applyDefensiveEffectWhenAttacked(attackWeapon);
+        Integer reducedDamage = attackerDamage;
+        for (DefensiveEquipment defensiveEquipment: defensiveEquipments) {
+            reducedDamage -= defensiveEquipment.applyDefensiveEffectWhenAttacked(attackWeapon, attackerDamage);
+            reducedDamage = Math.max(reducedDamage, 0);
+        }
+        reduceHitPoints(reducedDamage);
     }
 
     public void engage(Warrior otherWarrior) {
         while(hitPoints > 0 && otherWarrior.hitPoints > 0) {
-            otherWarrior.manageDefense(weapon);
-            manageDefense(otherWarrior.weapon);
+            manageEncounter(otherWarrior);
+            otherWarrior.manageEncounter(this);
         }
     }
 
@@ -86,10 +118,21 @@ public abstract class Warrior {
         List<DefensiveEquipment> defensiveEquipments = new ArrayList<>(Collections.emptyList());
 
         for (Equipment equipment : equipments) {
-            if (equipment instanceof DefensiveEquipment) {
+            if (DefensiveEquipment.class.isAssignableFrom(equipment.getClass())) {
                 defensiveEquipments.add((DefensiveEquipment) equipment);
             }
         }
         return defensiveEquipments;
+    }
+
+    public List<OffensiveEquipment> getAllOffensiveEquipments() {
+        List<OffensiveEquipment> offensiveEquipments = new ArrayList<>(Collections.emptyList());
+
+        for (Equipment equipment : equipments) {
+            if (OffensiveEquipment.class.isAssignableFrom(equipment.getClass())) {
+                offensiveEquipments.add((OffensiveEquipment) equipment);
+            }
+        }
+        return offensiveEquipments;
     }
 }

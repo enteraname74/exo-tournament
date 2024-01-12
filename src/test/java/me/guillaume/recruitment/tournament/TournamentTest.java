@@ -1,6 +1,7 @@
 package me.guillaume.recruitment.tournament;
 
 
+import model.warrior.impl.Highlander;
 import model.warrior.impl.Swordsman;
 import model.warrior.impl.Viking;
 import org.junit.jupiter.api.Test;
@@ -64,16 +65,16 @@ public class TournamentTest {
     @Test
     public void ArmoredSwordsmanVsViking() {
 
-//        Highlander highlander = new Highlander();
-//
-//        Swordsman swordsman = new Swordsman()
-//                .equip("buckler")
-//                .equip("armor");
-//
-//        swordsman.engage(highlander);
-//
-//        assertThat(swordsman.hitPoints()).isEqualTo(0);
-//        assertThat(highlander.hitPoints()).isEqualTo(10);
+        Highlander highlander = new Highlander();
+
+        Swordsman swordsman = new Swordsman()
+                .equip("buckler")
+                .equip("armor");
+
+        swordsman.engage(highlander);
+
+        assertThat(swordsman.hitPoints()).isEqualTo(0);
+        assertThat(highlander.hitPoints()).isEqualTo(10);
 
     }
 

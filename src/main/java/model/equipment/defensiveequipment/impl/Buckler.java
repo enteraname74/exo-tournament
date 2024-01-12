@@ -1,21 +1,21 @@
 package model.equipment.defensiveequipment.impl;
 
+import model.equipment.Equipment;
 import model.equipment.defensiveequipment.DefensiveEquipment;
 import model.warrior.Warrior;
 import model.weapon.Weapon;
-import model.weapon.impl.HandAxe;
 
-public class Buckler extends DefensiveEquipment {
+public class Buckler extends Equipment implements DefensiveEquipment {
     private Integer totalBlocked = 0;
     private Boolean hasLastAttackBeenBlocked = false;
     private Boolean isActive = true;
 
-    public Buckler(Warrior warrior) {
-        super("buckler", warrior);
+    public Buckler() {
+        super("buckler");
     }
 
     private void blockAttack(Weapon attackerWeapon) {
-        boolean weaponsIsAxe = attackerWeapon instanceof HandAxe;
+        boolean weaponsIsAxe = BucklerBreaker.class.isAssignableFrom(attackerWeapon.getClass());
         if (weaponsIsAxe) {
             totalBlocked += 1;
             isActive = totalBlocked < 3;
@@ -23,12 +23,15 @@ public class Buckler extends DefensiveEquipment {
     }
 
     @Override
-    public void applyDefensiveEffectWhenAttacked(Weapon attackerWeapon) {
+    public Integer applyDefensiveEffectWhenAttacked(Weapon attackerWeapon, Integer attackerDamage) {
+        Integer returnedDamage;
         if (hasLastAttackBeenBlocked || !isActive) {
-            getWarrior().reduceHitPoints(attackerWeapon.getDamage());
+            returnedDamage = 0;
         } else {
             blockAttack(attackerWeapon);
+            returnedDamage = attackerDamage;
         }
         hasLastAttackBeenBlocked = !hasLastAttackBeenBlocked;
+        return returnedDamage;
     }
 }

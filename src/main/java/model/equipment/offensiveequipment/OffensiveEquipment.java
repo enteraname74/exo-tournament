@@ -1,18 +1,14 @@
 package model.equipment.offensiveequipment;
 
-import model.equipment.Equipment;
 import model.warrior.Warrior;
+import model.weapon.Weapon;
 
-public abstract class OffensiveEquipment extends Equipment {
-
-    public OffensiveEquipment(String equipmentName, Warrior warrior) {
-        super(equipmentName, warrior);
-    }
+public interface OffensiveEquipment  {
 
     /**
-     *
-     * @param damage
-     * @param otherWarrior
+     * Return a new value of attack damage.
+     * @param attackerWeapon the weapon of the attacker.
+     * @return the new attack damage of the attacker.
      */
-    public abstract void attackWarriorWithEffect(Integer damage, Warrior otherWarrior);
+    Integer attackWarriorWithEffect(Weapon attackerWeapon);
 }

@@ -1,5 +1,6 @@
 package model.equipment;
 
+import model.equipment.defensiveequipment.impl.Armor;
 import model.equipment.defensiveequipment.impl.Buckler;
 import model.warrior.Warrior;
 
@@ -20,7 +21,9 @@ public class EquipmentFactory {
     public static Optional<Equipment> buildEquipmentFromName(String equipmentName, Warrior warrior) {
         switch (equipmentName) {
             case "buckler":
-                return Optional.of(new Buckler(warrior));
+                return Optional.of(new Buckler());
+            case "armor":
+                return Optional.of(new Armor());
             default:
                 return Optional.empty();
         }
