@@ -1,9 +1,8 @@
 package me.guillaume.recruitment.tournament;
 
 
-import classes.warriors.Highlander;
-import classes.warriors.Swordsman;
-import classes.warriors.Viking;
+import model.warrior.impl.Swordsman;
+import model.warrior.impl.Viking;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,16 +43,16 @@ public class TournamentTest {
     @Test
     public void SwordsmanWithBucklerVsVikingWithBuckler() {
 
-//        Swordsman swordsman = new Swordsman()
-//                .equip("buckler");
-//
-//        Viking viking = new Viking()
-//                .equip("buckler");
-//
-//        swordsman.engage(viking);
-//
-//        assertThat(swordsman.hitPoints()).isEqualTo(0);
-//        assertThat(viking.hitPoints()).isEqualTo(70);
+        Swordsman swordsman = new Swordsman()
+                .equip("buckler");
+
+        Viking viking = new Viking()
+                .equip("buckler");
+
+        swordsman.engage(viking);
+
+        assertThat(swordsman.hitPoints()).isEqualTo(0);
+        assertThat(viking.hitPoints()).isEqualTo(70);
 
     }
 

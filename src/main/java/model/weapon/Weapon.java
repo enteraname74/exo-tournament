@@ -1,4 +1,4 @@
-package classes;
+package model.weapon;
 
 /**
  * Weapon used by a Warrior.

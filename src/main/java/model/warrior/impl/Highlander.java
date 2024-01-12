@@ -1,8 +1,7 @@
-package classes.warriors;
+package model.warrior.impl;
 
-import classes.Warrior;
-import classes.Weapon;
-import classes.weapons.GreatSword;
+import model.warrior.Warrior;
+import model.weapon.impl.GreatSword;
 
 public class Highlander extends Warrior {
     public Highlander() {
@@ -11,5 +10,10 @@ public class Highlander extends Warrior {
 
     public Highlander(String elt) {
         super(10, new GreatSword());
+    }
+
+    @Override
+    public Warrior equip(String equipment) {
+        return null;
     }
 }

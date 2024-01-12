@@ -1,6 +1,6 @@
-package classes.weapons;
+package model.weapon.impl;
 
-import classes.Weapon;
+import model.weapon.Weapon;
 
 public class GreatSword extends Weapon {
     public GreatSword() {
